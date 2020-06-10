@@ -76,8 +76,10 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 	{
 		switch ($cmd)
 		{
-			case "editProperties":		// list all commands that need write permission here
+			case "editProperties":// list all commands that need write permission here
 			case "updateProperties":
+			case "getLink";
+			case "showLink";
 			case "endClass":
 			case "startClass":
                         case "deleteRecording":    
@@ -126,6 +128,7 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		if ($ilAccess->checkAccess("read", "", $this->object->getRefId()))
 		{
 			$ilTabs->addTab("content", $this->txt("content"), $ilCtrl->getLinkTarget($this, "showContent"));
+
 		}
 
 		// standard info screen tab
@@ -134,6 +137,7 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		// a "properties" tab
 		if ($ilAccess->checkAccess("write", "", $this->object->getRefId()))
 		{
+			$ilTabs->addTab("getLink", $this->txt("getlink"), $ilCtrl->getLinkTarget($this, "getLink"));
 			$ilTabs->addTab("properties", $this->txt("properties"), $ilCtrl->getLinkTarget($this, "editProperties"));
 		}
 
@@ -154,6 +158,95 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		$this->initPropertiesForm();
 		$this->getPropertiesValues();
 		$tpl->setContent($this->form->getHTML());
+	}
+
+	function getLink()
+	{
+		global $tpl, $ilTabs;
+
+		$ilTabs->activateTab("getLink");
+		$this->initGetLinkForm();
+
+
+		//$tpl->setContent($bbbURL);
+		$tpl->setContent($this->form->getHtml());
+	}
+
+	function initGetLinkForm()
+	{
+		global $ilCtrl;
+		include_once("Services/Form/classes/class.ilPropertyFormGUI.php");
+		$this->form = new ilPropertyFormGUI();
+
+		// name
+		$name = new ilTextInputGUI($this->txt("name"), "name");
+		$name->setRequired(true);
+		$this->form->addItem($name);
+
+		$this->form->addCommandButton("showLink", $this->txt("getLink"));
+
+		$this->form->setTitle($this->txt("getLink"));
+		$this->form->setFormAction($ilCtrl->getFormAction($this));
+
+	}
+
+	function showLink()
+	{
+
+		global $tpl, $ilTabs, $DIC;
+		include_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/classes/class.ilBigBlueButtonExternalLink.php");
+
+		
+		$f = $DIC->ui()->factory();
+		$renderer = $DIC->ui()->renderer();
+
+
+		$ilTabs->activateTab("getLink");
+		//$this->initGetLinkForm();
+		include_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/classes/class.ilBigBlueButtonProtocol.php");
+		$values["name"] = $this->object->getTitle();
+		$name=$_POST["name"];
+
+		include_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/classes/class.ilBigBlueButtonProtocol.php");
+
+		$BBBHelper=new ilBigBlueButtonProtocol();
+		$bbbURL=$BBBHelper->joinURLexternal($this->object, $name);
+		$bbbURLM=$BBBHelper->joinURLModeratorexternal($this->object, $name);
+		$bbbCreateMeetingURL=$BBBHelper->createURLexternal($this->object, $name);
+
+
+		$links = [
+			$f->link()->standard($this->txt("without_modr"), $bbbURL),
+			$f->link()->standard($this->txt("with_modr"), $bbbURLM)];
+		$messageBox = $renderer->render($f->messageBox()->success(($this->txt("getLinks_sucess").": <strong>".$name."</strong>")));
+		$out = $messageBox;
+
+		//Step 1: Define the dependent group (aka sub section)
+		$ui = $DIC->ui()->factory();
+		$renderer = $DIC->ui()->renderer();
+		$tnLinkField = $ui->input()->field()->text($this->txt("without_modr"))->withValue($bbbURL);
+		$modLinkField = $ui->input()->field()->text($this->txt("with_modr"))->withValue($bbbURLM);
+		//$createLinkField = $ui->input()->field()->text("Link zum Starten des Raums", "Mit diesem Link kann der Raum erstellt werden.")->withValue($bbbCreateMeetingURL);
+		$rederedLinks = ($renderer->render($tnLinkField)).($renderer->render($modLinkField));
+
+		$my_tpl = new ilTemplate("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/templates/tpl.BigBlueButtonExternal.html", true, true);
+
+
+		$readonly_links=
+
+		$list_item1 = $f->item()->standard($this->txt("exLink_message"))
+
+			->withDescription($rederedLinks);
+
+		$std_list = $f->panel()->listing()->standard($this->txt("invite_links"), array(
+			$f->item()->group("Links für $name", array(
+				$list_item1))));
+
+
+		$tpl->setContent($out.$renderer->render($std_list));
+
+
+
 	}
 
 	/**
@@ -274,7 +367,7 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		
 		if($isModerator){
 			$my_tpl = new ilTemplate("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/templates/tpl.BigBlueButtonModeratorClient.html", true, true);
-			
+
 			$my_tpl->setVariable("CMD_END_CLASS","cmd[endClass]");
 			$my_tpl->setVariable("END_CLASS",$this->txt('end_bbb_class'));
 			$my_tpl->setVariable("FORMACTION",$this->ctrl->getFormAction($this));

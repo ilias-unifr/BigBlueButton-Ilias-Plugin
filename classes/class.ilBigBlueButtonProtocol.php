@@ -96,6 +96,69 @@ class ilBigBlueButtonProtocol
 		
 		return $url;
 	}
+
+	function createURLexternal($object, $name){
+
+		global $ilUser;
+
+		$userName=$name;
+
+		$meetingID=$object->getBBBId();
+
+		$aPW=$object->getAttendeePwd();
+
+		$SALT=trim($object->getSvrSalt());
+
+		$srvURL=$object->getSvrPublicURL()/*.":".$object->getSvrPublicPort()*/ ;
+
+		$logoutUrl = "https://ilias.uni-freiburg.de";
+
+		$welcome = $object->getWelcomeText();
+
+		$mPW = $object->getModeratorPwd();
+
+
+		$url=BigBlueButton::createMeetingURL($meetingID, $meetingID, $aPW, $mPW, $welcome,$logoutUrl, $SALT, $srvURL);
+
+		return $url;
+	}
+
+	function joinURLexternal($object, $name){
+
+		global $ilUser;
+
+		$userName=$name;
+
+		$meetingID=$object->getBBBId();
+
+		$aPW=$object->getAttendeePwd();
+
+		$SALT=trim($object->getSvrSalt());
+
+		$srvURL=$object->getSvrPublicURL()/*.":".$object->getSvrPublicPort()*/ ;
+
+		$url=BigBlueButton::joinURL($meetingID, $userName, $aPW, $SALT, $srvURL);
+
+		return $url;
+	}
+	function joinURLModeratorexternal($object,$name){
+
+		global $ilUser;
+
+		$userName=$name;
+
+		$meetingID=$object->getBBBId();
+
+		$mPW=$object->getModeratorPwd();
+
+		$SALT=trim($object->getSvrSalt());
+
+		$srvURL=$object->getSvrPublicURL()/*.":".$object->getSvrPublicPort()*/ ;
+
+		$url=BigBlueButton::joinURL($meetingID, $userName, $mPW, $SALT, $srvURL);
+
+		return $url;
+	}
 	
 	function joinURLModerator($object){
 

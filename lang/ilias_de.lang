@@ -55,3 +55,10 @@ checkbox_record_meeting#:#Sitzung aufzeichnen
 meetingRecordedMessage#:#Die aktuelle Sitzung wird aufgezeichnet!
 saving_invoked#:#Eintrag gespeichert
 
+getLink#:#Links für externen Gast erzeugen
+name#:#Name des Gastes
+without_modr#:# Link ohne Moderatorenrechte
+with_modr#:# Link mit Moderatorenrechte
+getLinks_success#:# Link für externen Gast erfolgreich erstellt
+exLink_message#:# Schicken Sie den gewünschten Link dem externen Gast
+invite_links#:# Links zur Teilnahme am BBB-Raum
