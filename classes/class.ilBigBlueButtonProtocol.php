@@ -284,6 +284,26 @@ class ilBigBlueButtonProtocol
 		/* It checks if there is anyone inside the meeting
     	return BigBlueButton::isMeetingRunning( $meetingID, $srvURL, $SALT );
     	*/
-    }  
+    } 
+
+    function countAttendees($object){
+
+        $meetingID=$object->getBBBId();
+
+        $mPW=$object->getModeratorPwd();
+
+                $SALT=trim($object->getSvrSalt());
+
+                $srvURL=$object->getSvrPrivateURL()/*.":".$object->getSvrPrivatePort() */;
+
+                //This version checks if the meeting is created, not if it has any attendee
+        $response=BigBlueButton::getMeetingInfoArray( $meetingID, $mPW, $srvURL, $SALT );
+
+		return $response['participantCount'];
+                
+	}
+
+    
+ 
 }
 ?>

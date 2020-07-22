@@ -17,10 +17,12 @@
 			$('#endClassForm').hide();
 			$('#startClassForm').hide();
                         $('#deleteRecording').hide();
+			$('#openClassText').hide();
 			
 			var isMeetingRunning={isMeetingRunning};
 			if(isMeetingRunning){
 				$('#openClassLink').show();
+				$('#openClassText').show();
 				$('#endClassDiv').show();
 				$('#startClassDiv').hide();
                 $('#recordmeeting_visible').hide();
@@ -62,10 +64,11 @@
 		});
 </script>
 
-
+<div id="openClassText">{startClassText}
 <button id="openClassLink" class="btn btn-primary" type="button" onclick="window.open('{bbbURL}')">{clickToOpenClass}</button>
 <!--<a id="openClassLink" href="{bbbURL}" target="_blank">{clickToOpenClass}</a>
 -->
+<p/>{attendeeMessage} <strong> {attendees} </strong></div>
 <div id="startClassDiv">
 {noClassRunning}<br/><br/>
 <!--<button id="startClassLink" class="btn btn-default" type="button" onclick="window.open('#')">{startClass}</button>-->
@@ -76,7 +79,8 @@
 -->
 <p/>
 <div id="endClassDiv" style="margin-top: 40px">
-{classRunning} <a id="endClassLink" href="#" class="btn btn-default">{endClass}</a><br/><i> {endClassComment}</i>
+	{classRunning} <br/><a id="endClassLink" href="#" class="btn btn-warning">{endClass}</a><br/><i><strong> {endClassComment}</i></strong>
+
 </div>
 
 <form id="endClassForm" action="{FORMACTION}" method="post">

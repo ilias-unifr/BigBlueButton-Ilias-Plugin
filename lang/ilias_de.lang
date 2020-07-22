@@ -34,7 +34,7 @@ class_not_started_yet#:#Bislang ist noch kein Raum gestartet, versuchen Sie es z
 click_to_open_class#:#Virtuellen Raum öffnen
 no_class_running#:#Ihr virtueller Raum wurde noch nicht aktiviert. Damit andere Teilnehmer*innen den Raum betreten können, müssen Sie ihn zunächst starten.
 start_class#:#Virtuellen Raum starten
-class_running#:#Der virtuelle Raum ist angelegt und aktiv. Klicken Sie hier um den virtuellen Raum zu beenden: 
+class_running#:#Klicken Sie hier um den virtuellen Raum zu beenden: 
 end_class#:#Virtuellen Raum beenden
 end_class_comment#:#Beachten Sie, dass durch das Beenden des Raumes (a) alle Teilnehmer getrennt werden, die sich noch in dem Raum befinden und (b) die geteilten Notizen und Whiteboardinhalte gelöscht werden.
 new_class_created#:#Es wurde ein neuer virtueller Raum erstellt, dieser wird gleich in einem neuen Fenster geöffnet.
@@ -62,3 +62,6 @@ with_modr#:# Link mit Moderatorenrechte
 getLinks_success#:# Link für externen Gast erfolgreich erstellt
 exLink_message#:# Schicken Sie den gewünschten Link dem externen Gast
 invite_links#:# Links zur Teilnahme am BBB-Raum
+getLinks_sucess#:# Link für externen Gast erfolgreich erstellt
+attendee_message#:#TeilnehmerInnen im Raum:
+new_room#:#Der virtuelle Raum ist angelegt und aktiv. Klicken Sie hier um den Raum zu betreten:

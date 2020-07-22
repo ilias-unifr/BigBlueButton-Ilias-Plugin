@@ -17,3 +17,8 @@
 #isMeetingRecorded{
     color: red;
 }
+
+.btn-red {
+	  background-color: red;
+	    border-color: red;
+    }

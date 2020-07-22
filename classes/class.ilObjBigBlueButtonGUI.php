@@ -218,7 +218,7 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		$links = [
 			$f->link()->standard($this->txt("without_modr"), $bbbURL),
 			$f->link()->standard($this->txt("with_modr"), $bbbURLM)];
-		$messageBox = $renderer->render($f->messageBox()->success(($this->txt("getLinks_sucess").": <strong>".$name."</strong>")));
+		$messageBox = $renderer->render($f->messageBox()->success(($this->txt("getLinks_success").": <strong>".$name."</strong>")));
 		$out = $messageBox;
 
 		//Step 1: Define the dependent group (aka sub section)
@@ -382,7 +382,11 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 			$my_tpl->setVariable("FORMACTION3",$this->ctrl->getFormAction($this));
                         
 			$my_tpl->setVariable("classRunning", $this->txt("class_running"));
+			 $my_tpl->setVariable("startClassText", $this->txt("new_room"));
 			$my_tpl->setVariable("noClassRunning", $this->txt("no_class_running"));
+			$attendees=$BBBHelper->countAttendees($this->object);
+			$my_tpl->setVariable("attendeeMessage", $this->txt("attendee_message"));
+			$my_tpl->setVariable("attendees", $attendees);
 			$my_tpl->setVariable("startClass", $this->txt("start_class"));
 			$my_tpl->setVariable("endClass", $this->txt("end_class"));
 			$my_tpl->setVariable("endClassComment", $this->txt("end_class_comment"));
@@ -432,6 +436,7 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		}
 		
 		$my_tpl->setVariable("clickToOpenClass", $this->txt("click_to_open_class"));
+		
 		
 		//include JQuery Libraries
 		//$tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/js/jquery-1.5.2.min.js");
@@ -494,6 +499,7 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		$bbbURL=$BBBHelper->joinURLModerator($this->object);
 
 		$my_tpl->setVariable("newClassCreated", $this->txt("new_class_created"));
+		$my_tpl->setVariable("startClassText", $this->txt("new_room"));
 		$my_tpl->setVariable("newClassCreatedWarning", $this->txt("new_class_created_warning"));
 		$my_tpl->setVariable("newClassCreatedJoinManual", $this->txt("new_class_created_join_manual"));
 		$my_tpl->setVariable("bbbURL", $bbbURL);
