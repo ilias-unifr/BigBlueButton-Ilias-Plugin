@@ -1,7 +1,7 @@
 {VAL_1}
 
 
-    <script type="text/javaScript">
+<script type="text/javaScript" xmlns="http://www.w3.org/1999/html">
         
         function deleteRecord (link){
 			
@@ -31,6 +31,7 @@
 				$('#openClassLink').hide();
 				$('#endClassDiv').hide();
 				$('#startClassDiv').show();
+				$('#startClassForm').show();
 			}
                         
             var hasMeetingRecordings = {hasMeetingRecordings};
@@ -49,7 +50,7 @@
 			}
 			
 			$('#startClassLink').click(function() {
-                  $('#recordmeeting').prop("checked",$('#recordmeeting_visible').prop("checked"));
+                  $('#recordmeeting').prop("checked", $('#recordmeeting_visible').prop("checked"), $("#waitingroom").prop("checked"));
                   //alert($('#recordmeeting_visible').prop("checked"));
 				  $('#startClassFormInput').click();
                                   
@@ -71,12 +72,24 @@
 <p/>{attendeeMessage} <strong> {attendees} </strong></div>
 <div id="startClassDiv">
 {noClassRunning}<br/><br/>
-<!--<button id="startClassLink" class="btn btn-default" type="button" onclick="window.open('#')">{startClass}</button>-->
-<a id="startClassLink" href="#" class="btn btn-primary">{startClass}</a><br/>
+
+    <div class="form-group row col-sm-12">
+        <div class="row col-sm-9">
+       <form id="startClassForm" action="{FORMACTION2}" method="post">
+        <input id="startClassFormInput" class="btn btn-primary col-sm-3" type="submit" name="{CMD_START_CLASS}" value="{startClass}" >
+
+
+            <label class="control-label col-sm-6" for="wr">{clickToEnableWaitingroom}</label>
+            <input type="checkbox" value="checked" checked="checked" id="wr" name="waitingroom">
+           <!-- <div class="help-block col-sm-9">hier klicken, um Warteraum einzuschalten</div> -->
+       </form>
+        </div>
+
+    </div>
+
+
 </div>
-<!-- 
-<input type="checkbox" id="recordmeeting_visible" /><span id="recordmeeting_label">{checkbox_record_meeting}</span>
--->
+<hr style="margin-bottom: 10em">
 <p/>
 <div id="endClassDiv" style="margin-top: 40px">
 	{classRunning} <br/><a id="endClassLink" href="#" class="btn btn-warning">{endClass}</a><br/><i><strong> {endClassComment}</i></strong>
@@ -87,10 +100,11 @@
     <input id="endClassFormInput" class="submit" type="submit" name="{CMD_END_CLASS}" value="{END_CLASS}" >
 </form>
 
-<form id="startClassForm" action="{FORMACTION2}" method="post">
-    <input id="startClassFormInput" class="submit" type="submit" name="{CMD_START_CLASS}" value="{START_CLASS}" >
-    <input type="checkbox" id="recordmeeting" name="recordmeeting" />
-</form>
+<!-- <form id="startClassForm" action="{FORMACTION2}" method="post">
+   <input id="startClassFormInput" class="submit" type="submit" name="{CMD_START_CLASS}" value="{START_CLASS}" >
+ <input type="checkbox" id="recordmeeting" name="recordmeeting" />
+    <input type="checkbox" id="waitingroom" name="waitingroom" />
+</form>-->
 
 <form id="deleteRecording" action="{FORMACTION3}" method="post">
     <input id="deleteRecordingInput" class="submit" type="submit" name="{CMD_DELETE_RECORDING}" value="{DELETE_RECORDING}" >

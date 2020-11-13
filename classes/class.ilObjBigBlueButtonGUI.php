@@ -280,8 +280,6 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		$ti->setSize(120);
 		$this->form->addItem($ti);
 
-
-
 		$this->form->addCommandButton("updateProperties", $this->txt("save"));
 		 
 		$this->form->setTitle($this->txt("edit_properties"));
@@ -436,7 +434,7 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		}
 		
 		$my_tpl->setVariable("clickToOpenClass", $this->txt("click_to_open_class"));
-		
+		$my_tpl->setVariable("clickToEnableWaitingroom", $this->txt("click_to_open_waitingroom"));
 		
 		//include JQuery Libraries
 		//$tpl->addJavaScript("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/js/jquery-1.5.2.min.js");
@@ -490,7 +488,7 @@ class ilObjBigBlueButtonGUI extends ilObjectPluginGUI
 		include_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/classes/class.ilBigBlueButtonProtocol.php");
 		$BBBHelper=new ilBigBlueButtonProtocol();
 		
-		$BBBHelper->createMeeting($this->object, isset($_POST["recordmeeting"]));
+		$BBBHelper->createMeeting($this->object, isset($_POST["recordmeeting"]), isset($_POST["waitingroom"]));
 		
 		$my_tpl = new ilTemplate("./Customizing/global/plugins/Services/Repository/RepositoryObject/BigBlueButton/templates/tpl.BigBlueButtonModeratorMeetingCreated.html", true, true);
 		

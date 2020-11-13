@@ -80,6 +80,8 @@ class BigBlueButton {
 	var $userURL;
 	
 	var $conferenceIsRunning = false;
+
+	var $waiting_room = false;
 	
 	// this constructor is used to create a BigBlueButton Object
 	// use this object to create servers
@@ -147,7 +149,7 @@ class BigBlueButton {
 	*
 	*@return The url to join the meeting
 	*/
-	public static function createMeetingURL($name, $meetingID, $attendeePW, $moderatorPW, $welcome, $logoutURL, $SALT, $URL, $record = false ) {
+	public static function createMeetingURL($name, $meetingID, $attendeePW, $moderatorPW, $welcome, $logoutURL, $SALT, $URL, $record = false, $waiting_room = false ) {
 		$url_create = $URL."api/create?";
 		$voiceBridge = 70000 + rand(0, 9999);
 
@@ -160,6 +162,10 @@ class BigBlueButton {
                 
 		if( trim( $welcome ) ) 
 			$params .= '&welcome='.urlencode($welcome);
+
+		if(  $waiting_room  )
+		//	$params .= '&guestPolicy='.urlencode($welcome);
+			$params .= '&guestPolicy=ASK_MODERATOR';
 
 		return ( $url_create.$params.'&checksum='.sha1("create".$params.$SALT) );
 	}
@@ -324,26 +330,26 @@ class BigBlueButton {
 	}
 
 	/**
-	*This method creates a meeting and return an array of the xml packet
-	*
-	*@param username 
-	*@param meetingID -- the unique meeting identifier used to store the meeting in the bigbluebutton server
-	*@param welcomeString -- the welcome message to be displayed when a user logs in to the meeting
-	*@param mPW -- the moderator password of the meeting
-	*@param aPW -- the attendee password of the meeting
-	*@param SALT -- the security salt of the bigbluebutton server
-	*@param URL -- the url of the bigbluebutton server
-	*@param logoutURL -- the url the user should be redirected to when they logout of bigbluebutton
-        *@param record -- if set session will be recorded by bigbluebutton
-	*
-	*@return
-	*	- Null if unable to reach the bigbluebutton server
-	*	- If failed it returns an array containing a returncode, messageKey, message. 
-	*	- If success it returns an array containing a returncode, messageKey, message, meetingID, attendeePW, moderatorPW, hasBeenForciblyEnded.
-	*/
-	public static function createMeetingArray( $username, $meetingID, $welcomeString, $mPW, $aPW, $SALT, $URL, $logoutURL, $record=false) {
+	 *This method creates a meeting and return an array of the xml packet
+	 *
+	 * @param $username
+	 * @param $meetingID
+	 * @param $welcomeString
+	 * @param $mPW
+	 * @param $aPW
+	 * @param $SALT
+	 * @param $URL
+	 * @param $logoutURL
+	 * @param bool $record
+	 * @param $waiting
+	 * @return array|null - Null if unable to reach the bigbluebutton server
+	 *    - Null if unable to reach the bigbluebutton server
+	 *    - If failed it returns an array containing a returncode, messageKey, message.
+	 *    - If success it returns an array containing a returncode, messageKey, message, meetingID, attendeePW, moderatorPW, hasBeenForciblyEnded.
+	 */
+	public static function createMeetingArray( $username, $meetingID, $welcomeString, $mPW, $aPW, $SALT, $URL, $logoutURL, $record = false, $waiting) {
 
-		$xml = bbb_wrap_simplexml_load_file( BigBlueButton::createMeetingURL($username, $meetingID, $aPW, $mPW, $welcomeString, $logoutURL, $SALT, $URL, $record ) );
+		$xml = bbb_wrap_simplexml_load_file( BigBlueButton::createMeetingURL($username, $meetingID, $aPW, $mPW, $welcomeString, $logoutURL, $SALT, $URL, $record, $waiting ) );
 
 		if( $xml ) {
 			if($xml->meetingID) return array('returncode' => $xml->returncode, 'message' => $xml->message, 'messageKey' => $xml->messageKey, 'meetingID' => $xml->meetingID, 'attendeePW' => $xml->attendeePW, 'moderatorPW' => $xml->moderatorPW, 'hasBeenForciblyEnded' => $xml->hasBeenForciblyEnded );

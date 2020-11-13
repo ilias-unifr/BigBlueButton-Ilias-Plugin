@@ -49,7 +49,7 @@ class ilBigBlueButtonProtocol
 	*/
 	
 	
-	function createMeeting($object, $record = false){
+	function createMeeting($object, $record = false, $waiting = false){
 		
 		
 		$meetingID=$object->getBBBId();
@@ -70,7 +70,7 @@ class ilBigBlueButtonProtocol
 		$logoutURL = ilLink::_getLink($object->getRefId());
 		
 		
-		$response=BigBlueButton::createMeetingArray($meetingID, $meetingID, $welcomeString, $mPW, $aPW, $SALT, $srvURL, $logoutURL, $record );
+		$response=BigBlueButton::createMeetingArray($meetingID, $meetingID, $welcomeString, $mPW, $aPW, $SALT, $srvURL, $logoutURL, $record, $waiting );
 		
 		return $response;
 		
